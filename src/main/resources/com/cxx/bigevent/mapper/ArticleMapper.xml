@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cxx.bigevent.mapper.ArticleMapper">
+    <select id="list" resultType="com.cxx.bigevent.pojo.Article">
+        select * from tb_article
+        <where>
+            <!-- 将and放在if标签内部的开头 -->
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <!-- 最后一个固定条件也需要加and -->
+            and create_user_id = #{userId}
+        </where>
+        order by create_time desc
+    </select>
+</mapper>
