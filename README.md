@@ -1,9 +1,9 @@
 # Big Event 后端项目
 
 基于 Spring Boot 的内容管理系统后端服务，提供用户管理、文章分类管理、文章内容管理和文件上传等核心功能。
+前端项目地址：https://github.com/piece-weaver/big-event-vue
 
 效果图展示：
-
 <img src="https://big-event-demo-123.oss-cn-beijing.aliyuncs.com/big_event_cover.png" alt="登录页面" style="zoom:50%;" />
 
 <img src="https://big-event-demo-123.oss-cn-beijing.aliyuncs.com/big_event_cover_article.png" alt="文章页面" style="zoom:50%;" />
