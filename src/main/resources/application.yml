@@ -1,0 +1,127 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/big_event?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: ${DB_PASSWORD:123456}
+  server:
+    tomcat:
+      relaxed-query-chars: "[ ], { }, ^, `, {, |, }, \\, ~, ©"
+      relaxed-path-chars: "[ ], { }, ^, `, {, |, }, \\, ~, ©"
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      cache:
+        ttl: 30m
+        prefix: "big-event:cache:"
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  cache:
+    type: composite
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+
+aliyun:
+  oss:
+    endpoint: ${ALIYUN_OSS_ENDPOINT}
+    access-key-id: ${ALIYUN_OSS_ACCESS_KEY_ID}
+    access-key-secret: ${ALIYUN_OSS_ACCESS_KEY_SECRET}
+    bucket-name: ${ALIYUN_OSS_BUCKET_NAME}
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+ollama:
+  host: http://localhost:11434
+  model: deepseek-r1:8b
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    try-it-out-enabled: true
+    filter: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics,circuitbreakers,ratelimiters
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: big-event
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.5, 0.75, 0.95, 0.99
+
+caffeine:
+  specs:
+    article:
+      maximumSize: 1000
+      expireAfterWrite: 10m
+    category:
+      maximumSize: 100
+      expireAfterWrite: 30m
+    user:
+      maximumSize: 500
+      expireAfterWrite: 5m
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      aiService:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 2
+        slowCallDurationThreshold: 60s
+  ratelimiter:
+    instances:
+      default:
+        limitForPeriod: 100
+        limitRefreshPeriod: 1s
+        timeoutDuration: 500ms
+      aiService:
+        limitForPeriod: 10
+        limitRefreshPeriod: 1m
+        timeoutDuration: 10s
+  retry:
+    instances:
+      aiService:
+        maxAttempts: 3
+        waitDuration: 500ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+
+logging:
+  level:
+    root: INFO
+    com.cxx.bigevent: DEBUG
+    io.github.resilience4j: DEBUG

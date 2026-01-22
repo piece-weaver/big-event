@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxx.bigevent.mapper.ArticleCollectMapper">
+
+    <resultMap id="ArticleCollectResultMap" type="com.cxx.bigevent.pojo.ArticleCollect">
+        <id property="id" column="id"/>
+        <result property="articleId" column="article_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="folderName" column="folder_name"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <resultMap id="ArticleCollectVOResultMap" type="com.cxx.bigevent.pojo.ArticleCollectVO">
+        <id property="id" column="id"/>
+        <result property="folderName" column="folder_name"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="article" javaType="com.cxx.bigevent.pojo.Article">
+            <id property="id" column="a_id"/>
+            <result property="title" column="a_title"/>
+            <result property="content" column="a_content"/>
+            <result property="coverImg" column="a_cover_img"/>
+            <result property="categoryId" column="a_category_id"/>
+        </association>
+    </resultMap>
+
+    <select id="findByUserId" resultMap="ArticleCollectVOResultMap">
+        SELECT c.id, c.folder_name, c.created_at,
+               a.id as a_id, a.title as a_title, a.content as a_content,
+               a.cover_img as a_cover_img, a.category_id as a_category_id
+        FROM tb_article_collect c
+        JOIN tb_article a ON c.article_id = a.id
+        WHERE c.user_id = #{userId}
+        ORDER BY c.created_at DESC
+    </select>
+
+</mapper>
