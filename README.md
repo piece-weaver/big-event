@@ -221,10 +221,9 @@ big-event/
 │   ├── validation/           # 校验器
 │   └── BigEventApplication.java
 ├── src/main/resources/
+│   └── com/cxx/bigevent
+│   └── i18n
 │   ├── application.yml       # 应用配置文件
-│   └── com/cxx/bigevent/mapper/
-│       └── ArticleMapper.xml # MyBatis 映射文件
-├── .env                      # 环境变量配置
 ├── .env.example              # 环境变量示例
 ├── big_event.sql             # 数据库初始化脚本
 ├── API_DOCUMENTATION.md      # API接口文档
