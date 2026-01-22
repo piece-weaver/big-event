@@ -97,11 +97,11 @@ mvn spring-boot:run
 
 ## API文档
 
-完整API文档请查看 [API_DOCUMENTATION.md](D:\WorkProjects\IntelliJ IDEA\big-event\API_DOCUMENTATION.md)
+完整API文档请查看 API_DOCUMENTATION.md
 
 ## 开发文档
 
-AI开发规范请查看 [AGENTS.md](D:\WorkProjects\IntelliJ IDEA\big-event\AGENTS.md)
+AI开发规范请查看 AGENTS.md
 
 ## 项目结构
 
